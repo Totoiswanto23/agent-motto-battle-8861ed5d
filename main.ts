@@ -19,6 +19,13 @@ if (LINE.length < 1 || LINE.length > 200 || !LINE.trim()) {
   console.error(`entry line is ${LINE.length} chars, must be 1-200`);
   process.exit(1);
 }
+// A motto on a profile must not start or end with stray whitespace, and
+// must hold no control character: either would make the gate read a
+// different line than the one written here.
+if (LINE !== LINE.trim() || /[\u0000-\u001f]/.test(LINE)) {
+  console.error('entry line must not start/end with whitespace or hold control characters');
+  process.exit(1);
+}
 if (LINE.includes('\n')) {
   console.error('entry line must be a single line');
   process.exit(1);
